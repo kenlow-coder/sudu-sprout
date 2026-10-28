@@ -29,16 +29,20 @@ jobs:
           mkdir -p public
           curl -L --fail --retry 3 "https://kenlow-coder.github.io/macro-sudu-site/sudu-sprout/" -o public/index.html
           test -s public/index.html
+          printf '%s' "$SUDU_SPROUT_FAVICON" | base64 --decode > public/favicon.png
+          test -s public/favicon.png
           python - <<'PY'
           from pathlib import Path
-          import os, re
+          import re
           p=Path("public/index.html")
           s=p.read_text(encoding="utf-8")
-          tag='<link rel="icon" type="image/png" href="data:image/png;base64,'+os.environ["SUDU_SPROUT_FAVICON"]+'">'
-          if re.search(r'<link\s+rel=["\']icon["\'][^>]*>',s,re.I):
-              s=re.sub(r'<link\s+rel=["\']icon["\'][^>]*>',tag,s,count=1,flags=re.I)
-          else:
-              s=s.replace("</head>",tag+"\n</head>",1)
+          s=re.sub(r'<link\s+rel=["\'](?:shortcut )?icon["\'][^>]*>\s*','',s,flags=re.I)
+          s=re.sub(r'<link\s+rel=["\']apple-touch-icon["\'][^>]*>\s*','',s,flags=re.I)
+          links='''<link rel="icon" type="image/png" sizes="256x256" href="./favicon.png?v=4">
+<link rel="shortcut icon" type="image/png" href="./favicon.png?v=4">
+<link rel="apple-touch-icon" sizes="180x180" href="./favicon.png?v=4">
+<meta name="theme-color" content="#fff8ed">'''
+          s=s.replace("</head>",links+"\n</head>",1)
           p.write_text(s,encoding="utf-8")
           PY
       - uses: actions/configure-pages@v5
