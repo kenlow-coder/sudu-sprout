@@ -22,10 +22,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Build standalone Sudu & Sprout site
+        run: |
+          mkdir -p public
+          curl -L --fail --retry 3 "https://kenlow-coder.github.io/macro-sudu-site/sudu-sprout/" -o public/index.html
+          test -s public/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: "."
+          path: "public"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
