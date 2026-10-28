@@ -34,9 +34,7 @@ jobs:
           s=p.read_text(encoding="utf-8")
           s=re.sub(r'<link\s+rel=["\'](?:shortcut )?icon["\'][^>]*>\s*','',s,flags=re.I)
           s=re.sub(r'<link\s+rel=["\']apple-touch-icon["\'][^>]*>\s*','',s,flags=re.I)
-          links='''<link rel="icon" type="image/png" sizes="256x256" href="./favicon.png?v=5">
-<link rel="shortcut icon" type="image/png" href="./favicon.png?v=5">
-<link rel="apple-touch-icon" sizes="180x180" href="./favicon.png?v=5">'''
+          links='<link rel="icon" type="image/png" sizes="256x256" href="./favicon.png?v=6">\n<link rel="shortcut icon" type="image/png" href="./favicon.png?v=6">\n<link rel="apple-touch-icon" sizes="180x180" href="./favicon.png?v=6">'
           s=s.replace("</head>",links+"\n</head>",1)
           p.write_text(s,encoding="utf-8")
           PY
