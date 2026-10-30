@@ -1,0 +1,48 @@
+name: One-time Supabase order test
+
+on:
+  push:
+    paths:
+      - ".github/workflows/test-supabase-order.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test-order:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit production test order
+        run: |
+          cat > payload.json <<'JSON'
+          {
+            "full_name": "Sudu Sprout QA Test",
+            "email": "sudusprout+qa-20261030@example.com",
+            "phone": "0100000000",
+            "age": 29,
+            "weight_kg": 70,
+            "address": "QA TEST - DO NOT DELIVER",
+            "postcode": "51200",
+            "delivery_area": "Kepong",
+            "delivery_day": "Wednesday",
+            "plan": "Standard",
+            "meal_preference": "Balanced",
+            "meals_per_week": 6,
+            "meal_subtotal": 107.40,
+            "items": [
+              {"meal_name": "Teriyaki Chicken Breast", "quantity": 2},
+              {"meal_name": "Ginger Chicken Breast", "quantity": 2},
+              {"meal_name": "Korean Protein Bowl", "quantity": 2}
+            ],
+            "allergies": "None",
+            "source": "QA Automation",
+            "main_goal": "End-to-end checkout verification",
+            "marketing_consent": false,
+            "query_string": "?utm_source=qa&utm_medium=github_actions"
+          }
+          JSON
+          curl --fail-with-body -sS \
+            -X POST "https://cahoocydfiujuelkrqqf.supabase.co/functions/v1/create-subscription-order" \
+            -H "Content-Type: application/json" \
+            --data @payload.json | tee response.json
+          grep -q '"ok":true' response.json
