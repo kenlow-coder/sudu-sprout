@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after homepage meal-plan CTA update
+# Refresh source after social footer and meal-plan wording update
 
 on:
   push:
