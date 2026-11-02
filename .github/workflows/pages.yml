@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after plan, delivery-day and favicon fixes
+# Refresh source after bottom checkout CTA update
 
 on:
   push:
