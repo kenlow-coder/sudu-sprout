@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after enforced cutoff and morning delivery update
+# Refresh source after start-date picker and three-day cutoff update
 
 on:
   push:
