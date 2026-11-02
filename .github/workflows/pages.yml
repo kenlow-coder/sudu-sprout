@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after verified customisation heading fix
+# Refresh source after get-started CTA cleanup
 
 on:
   push:
