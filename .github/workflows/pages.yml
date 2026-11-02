@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after final plan wording and cache-bust update
+# Refresh source after corrected customisation headings
 
 on:
   push:
