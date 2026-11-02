@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after postcode coverage update
+# Refresh source after bank transfer payment flow update
 
 on:
   push:
