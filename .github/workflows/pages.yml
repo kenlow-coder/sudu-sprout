@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after WhatsApp-only outside-area rule
+# Refresh source after privacy wording cleanup
 
 on:
   push:
