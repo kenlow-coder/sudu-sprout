@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after new Sudu & Sprout wordmark
+# Refresh source after launch-poster delivery update
 
 on:
   push:
