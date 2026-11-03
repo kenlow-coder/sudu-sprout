@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after launch-poster delivery update
+# Refresh source after WhatsApp-only outside-area rule
 
 on:
   push:
