@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after address dedupe and auto-area fix
+# Refresh source after stronger address dedupe
 
 on:
   push:
