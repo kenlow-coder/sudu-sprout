@@ -38,6 +38,41 @@ jobs:
           s=re.sub(r'<link\s+rel=["\']apple-touch-icon["\'][^>]*>\s*','',s,flags=re.I)
           links='<link rel="icon" type="image/png" sizes="64x64" href="./favicon.png?v=9">\n<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico?v=9">\n<link rel="apple-touch-icon" href="./favicon.png?v=9">'
           s=s.replace("</head>",links+"\n</head>",1)
+          menu_css_present=".updated-menu-grid" in s
+          updated_menu='''<section id="menu" class="updated-menu-section">
+            <div class="wrap">
+              <div class="section-head">
+                <div><span class="eyebrow">Our updated menu</span><h2>Fresh favourites, with macros made clear.</h2></div>
+                <p>Calories and macronutrients are listed per meal.</p>
+              </div>
+              <div class="updated-menu-grid">
+                <article class="updated-menu-card"><h3>Teriyaki Chicken</h3><div class="updated-menu-macros"><div><span>Calories</span><strong>515 kcal</strong></div><div><span>Protein</span><strong>49.8 g</strong></div><div><span>Fat</span><strong>15.6 g</strong></div><div><span>Carbs</span><strong>40.8 g</strong></div></div></article>
+                <article class="updated-menu-card"><h3>Cajun Chicken</h3><div class="updated-menu-macros"><div><span>Calories</span><strong>467.2 kcal</strong></div><div><span>Protein</span><strong>53 g</strong></div><div><span>Fat</span><strong>12 g</strong></div><div><span>Carbs</span><strong>34 g</strong></div></div></article>
+                <article class="updated-menu-card"><h3>Korean Protein Bowl</h3><div class="updated-menu-macros"><div><span>Calories</span><strong>469 kcal</strong></div><div><span>Protein</span><strong>39 g</strong></div><div><span>Fat</span><strong>12 g</strong></div><div><span>Carbs</span><strong>47 g</strong></div></div></article>
+                <article class="updated-menu-card"><h3>Seaweed Prawn Soba Noodles</h3><div class="updated-menu-macros"><div><span>Calories</span><strong>482 kcal</strong></div><div><span>Protein</span><strong>54 g</strong></div><div><span>Fat</span><strong>13 g</strong></div><div><span>Carbs</span><strong>48 g</strong></div></div></article>
+                <article class="updated-menu-card"><h3>Mackerel Fish</h3><div class="updated-menu-macros"><div><span>Calories</span><strong>390 kcal</strong></div><div><span>Protein</span><strong>26 g</strong></div><div><span>Fat</span><strong>10 g</strong></div><div><span>Carbs</span><strong>36 g</strong></div></div></article>
+                <article class="updated-menu-card"><h3>Beef Tacos</h3><div class="updated-menu-macros"><div><span>Calories</span><strong>673 kcal</strong></div><div><span>Protein</span><strong>67 g</strong></div><div><span>Fat</span><strong>26 g</strong></div><div><span>Carbs</span><strong>42 g</strong></div></div></article>
+                <article class="updated-menu-card"><h3>Lemon Dill Salmon</h3><div class="updated-menu-macros"><div><span>Calories</span><strong>553 kcal</strong></div><div><span>Protein</span><strong>44 g</strong></div><div><span>Fat</span><strong>23 g</strong></div><div><span>Carbs</span><strong>38 g</strong></div></div></article>
+              </div>
+              <div class="section-plan-cta"><a class="cta" href="#plans">CUSTOMISE YOUR MEAL PLAN</a></div>
+            </div>
+          </section>'''
+          s,n=re.subn(r'<section id="menu"(?:\s+[^>]*)?>.*?</section>',lambda _:updated_menu,s,count=1,flags=re.S)
+          if n!=1:
+              raise RuntimeError("Could not replace the previous menu section")
+          if not menu_css_present:
+              menu_css='''<style>
+          .updated-menu-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:28px}
+          .updated-menu-card{padding:22px;border:1px solid rgba(36,75,53,.13);border-radius:20px;background:#fff;box-shadow:0 10px 30px rgba(32,51,41,.045)}
+          .updated-menu-card h3{margin:0 0 17px;color:#244b35;font:700 1.2rem/1.25 Georgia,"Times New Roman",serif}
+          .updated-menu-macros{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+          .updated-menu-macros div{display:flex;flex-direction:column;gap:4px;padding:10px 11px;border-radius:12px;background:#f7f7f1}
+          .updated-menu-macros span{font-size:.7rem;color:#718078}
+          .updated-menu-macros strong{font-size:.95rem;color:#203329;font-variant-numeric:tabular-nums}
+          @media(max-width:900px){.updated-menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+          @media(max-width:560px){.updated-menu-grid{grid-template-columns:1fr;gap:12px}.updated-menu-card{padding:18px}.updated-menu-macros strong{font-size:.9rem}}
+          </style>'''
+              s=s.replace("</head>",menu_css+"\n</head>",1)
           p.write_text(s,encoding="utf-8")
           PY
       - uses: actions/configure-pages@v5
