@@ -1,5 +1,4 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after stronger address dedupe
 
 on:
   push:
@@ -23,10 +22,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Checkout latest site source
+        uses: actions/checkout@v4
+        with:
+          repository: kenlow-coder/macro-sudu-site
+          ref: main
+          path: source
+
       - name: Build standalone Sudu & Sprout site
+        working-directory: source
+        run: |
+          python build_sudu_sprout.py
+          mkdir -p ../public
+          cp sudu-sprout/index.html ../public/index.html
+
+      - name: Add favicons and verify menu photos
         run: |
           mkdir -p public
-          curl -L --fail --retry 3 -H "Cache-Control: no-cache" "https://kenlow-coder.github.io/macro-sudu-site/sudu-sprout/?refresh=${GITHUB_SHA}" -o public/index.html
           base64 -d favicon.b64 > public/favicon.png
           base64 -d favicon.ico.b64 > public/favicon.ico
           python - <<'PY'
@@ -34,18 +47,23 @@ jobs:
           import re
           p=Path("public/index.html")
           s=p.read_text(encoding="utf-8")
-          s=re.sub(r'<link\s+rel=["\'](?:shortcut )?icon["\'][^>]*>\s*','',s,flags=re.I)
-          s=re.sub(r'<link\s+rel=["\']apple-touch-icon["\'][^>]*>\s*','',s,flags=re.I)
-          links='<link rel="icon" type="image/png" sizes="64x64" href="./favicon.png?v=9">\n<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico?v=9">\n<link rel="apple-touch-icon" href="./favicon.png?v=9">'
-          s=s.replace("</head>",links+"\n</head>",1)
+          s=re.sub(r'<link\\s+rel=["\\'](?:shortcut )?icon["\\'][^>]*>\\s*','',s,flags=re.I)
+          s=re.sub(r'<link\\s+rel=["\\']apple-touch-icon["\\'][^>]*>\\s*','',s,flags=re.I)
+          links='<link rel="icon" type="image/png" sizes="64x64" href="./favicon.png?v=10">\\n<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico?v=10">\\n<link rel="apple-touch-icon" href="./favicon.png?v=10">'
+          s=s.replace("</head>",links+"\\n</head>",1)
           if ".updated-menu-grid" not in s or "data:image/webp;base64," not in s:
-              raise RuntimeError("Source menu is missing the built meal photos")
+              raise RuntimeError("Built menu is missing the overhead meal photos")
+          if "Teriyaki Chicken" not in s or "Lemon Dill Salmon" not in s:
+              raise RuntimeError("Built menu is missing the updated meal list")
           p.write_text(s,encoding="utf-8")
           PY
+
       - uses: actions/configure-pages@v5
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: "public"
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
