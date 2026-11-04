@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after Public Bank payment details update
+# Refresh source after fixed-menu ordering and Vegetarian update
 
 on:
   push:
