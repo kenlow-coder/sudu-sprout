@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after address verification and auto-area update
+# Refresh source after 5-10-20 plan and weekday delivery update
 
 on:
   push:
