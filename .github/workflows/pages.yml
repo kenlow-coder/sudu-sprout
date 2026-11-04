@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after privacy wording cleanup
+# Refresh source after address verification and auto-area update
 
 on:
   push:
