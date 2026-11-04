@@ -1,5 +1,5 @@
 name: Deploy Sudu & Sprout to GitHub Pages
-# Refresh source after final weekday delivery copy cleanup
+# Refresh source after final meal-plan copy cleanup
 
 on:
   push:
