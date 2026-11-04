@@ -23,15 +23,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build standalone site from the latest source artifact
+      - name: Build standalone Sudu & Sprout site
         run: |
           mkdir -p public
-          RUN_ID=$(curl -fsSL "https://api.github.com/repos/kenlow-coder/macro-sudu-site/actions/runs?branch=main&per_page=1" | python -c 'import json,sys; print(json.load(sys.stdin)["workflow_runs"][0]["id"])')
-          ARTIFACT_ID=$(curl -fsSL "https://api.github.com/repos/kenlow-coder/macro-sudu-site/actions/runs/${RUN_ID}/artifacts" | python -c 'import json,sys; print(next(a["id"] for a in json.load(sys.stdin)["artifacts"] if a["name"]=="github-pages" and not a["expired"]))')
-          curl -L --fail --retry 3 "https://api.github.com/repos/kenlow-coder/macro-sudu-site/actions/artifacts/${ARTIFACT_ID}/zip" -o /tmp/source-pages.zip
-          mkdir -p /tmp/source-pages
-          unzip -p /tmp/source-pages.zip artifact.tar | tar -xf - -C /tmp/source-pages
-          cp /tmp/source-pages/sudu-sprout/index.html public/index.html
+          curl -L --fail --retry 3 -H "Cache-Control: no-cache" "https://kenlow-coder.github.io/macro-sudu-site/sudu-sprout/?refresh=${GITHUB_SHA}" -o public/index.html
           base64 -d favicon.b64 > public/favicon.png
           base64 -d favicon.ico.b64 > public/favicon.ico
           python - <<'PY'
