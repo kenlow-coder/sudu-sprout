@@ -47,10 +47,10 @@ jobs:
           import re
           p=Path("public/index.html")
           s=p.read_text(encoding="utf-8")
-          s=re.sub(r'<link\\s+rel=["\\'](?:shortcut )?icon["\\'][^>]*>\\s*','',s,flags=re.I)
-          s=re.sub(r'<link\\s+rel=["\\']apple-touch-icon["\\'][^>]*>\\s*','',s,flags=re.I)
-          links='<link rel="icon" type="image/png" sizes="64x64" href="./favicon.png?v=10">\\n<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico?v=10">\\n<link rel="apple-touch-icon" href="./favicon.png?v=10">'
-          s=s.replace("</head>",links+"\\n</head>",1)
+          s=re.sub(r'<link\s+rel="(?:shortcut )?icon"[^>]*>\s*','',s,flags=re.I)
+          s=re.sub(r'<link\s+rel="apple-touch-icon"[^>]*>\s*','',s,flags=re.I)
+          links='<link rel="icon" type="image/png" sizes="64x64" href="./favicon.png?v=10">\n<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico?v=10">\n<link rel="apple-touch-icon" href="./favicon.png?v=10">'
+          s=s.replace("</head>",links+"\n</head>",1)
           if ".updated-menu-grid" not in s or "data:image/webp;base64," not in s:
               raise RuntimeError("Built menu is missing the overhead meal photos")
           if "Teriyaki Chicken" not in s or "Lemon Dill Salmon" not in s:
